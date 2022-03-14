@@ -1,6 +1,6 @@
 ---
 title: Value Objects dla węży
-date: "2020-06-05T23:08:32.169Z"
+date: "2022-03-14T22:00:00.169Z"
 template: "post"
 draft: false
 slug: "value-objects-dla-wezy"
@@ -23,12 +23,12 @@ description: "Zbiór wiedzy o Value Objects oraz przykłady w Pythonie"
 
 ## Czym są Value Objects i jakie mają znaczenie strategiczne
 
-Jeśli miałbym wymienić najistotniejszą dla mnie cechę Value Object to było by to znaczenie biznesowe. I tak, prostym zmiennym nadajemy nowego więcej mówiącego znaczenia biznesowego. Dzięki czemu string np. przestaje być stringiem a jest nazwiskiem, flot/int lub inny zestaw cyfr staje się wartością pieniądza. To nie wszystko, bo przecież czy jeśli mamy pieniądze to czy suma dwóch "pieniędzy", suma dwóch float da nam poprawny wynik ? Nie koniecznie, ponieważ jeśli nie weżniemy pod uwagę waluty, to ta suma już nie będzie sensowną, gdy sumujemy PLN z EUR. 
+Jeśli miałbym wymienić najistotniejszą dla mnie cechę Value Object to byłoby to znaczenie biznesowe. I tak prostym zmiennym nadajemy nowego więcej mówiącego znaczenia biznesowego. Dzięki czemu string np. przestaje być stringiem a jest nazwiskiem, flot/int lub inny zestaw cyfr staje się wartością pieniądza. To nie wszystko, bo przecież czy jeśli mamy pieniądze to czy suma dwóch "pieniędzy" - suma dwóch float da nam poprawny wynik ? Nie koniecznie, ponieważ jeśli nie weźniemy pod uwagę waluty, to ta suma już nie będzie sensowną, gdy sumujemy PLN z EUR. 
 
 ## Zysk biznesowy
 
 Weźmy dla przykładu 10.00 i zastanówmy się czym to jest. Hymmm ... Ciężko wymyślić nie ? A jeśli powiemy że jest to 10.00 l, a w dodatku nazwiemy to 
-BottleCapacity. Aha ... więc jest to już czymś konkretniejszym - jest to pojemność butelki. Pojemność nie może być ujemna, więc będzie zawsze dodatnia. Więc możemy powiedzieć, że poprawne są tylko wartości większe od 0, to już daje nam jakiś obraz walidacji, lub zakresów biznesowych, które niesie ze sobą ten obiekt. 
+BottleCapacity. Aha ... więc jest to już czymś konkretniejszym - jest to pojemność butelki. Pojemność nie może być ujemna, więc będzie zawsze dodatnia. Więc możemy powiedzieć, że poprawne są tylko wartości większe od 0, co przekłada się na konkretne warunki walidacji, lub zakresów biznesowych, które niesie ze sobą ten obiekt. 
 
 ## Primitive Obsession
 
@@ -55,7 +55,7 @@ class Money:
         self.value = value
         self.currency = currency
     
-    def add(self, money: Money):
+    def add(self, money: Money) -> 'Money':
         if self.currency == money.currency
             return Money(self.value + money.value, money.currency)
         raise ValidationError("Different currency")
@@ -103,7 +103,7 @@ class Money:
         return Money(Decimal(value)/100, currency)
 
     @staticmethod
-    def from_flot(value: float, currency: str) -> 'Money':
+    def from_float(value: float, currency: str) -> 'Money':
         return Money(Decimal(value), currency)
 
     def percentage(self, percentage: int) -> 'Money':
@@ -112,7 +112,7 @@ class Money:
     def to_int(self) -> int:
         return int(self.__value * 100)
 
-    def to_flot(self) -> float:
+    def to_float(self) -> float:
         return float(self.__value)
 
     def __add__(self, other: 'Money') -> 'Money':
@@ -153,9 +153,9 @@ class TestMoney(TestCase):
         self.assertEqual(5, Money.from_int(5, "USD").to_int())
 
     def test_should_project_money_to_float(self):
-        self.assertEqual(10.10, Money.from_int(1010, "USD").to_flot())
-        self.assertEqual(0.12, Money.from_int(12, "USD").to_flot())
-        self.assertEqual(5.11, Money.from_int(511, "USD").to_flot())
+        self.assertEqual(10.10, Money.from_int(1010, "USD").to_float())
+        self.assertEqual(0.12, Money.from_int(12, "USD").to_float())
+        self.assertEqual(5.11, Money.from_int(511, "USD").to_float())
 
     def test_can_add_money(self):
         self.assertEqual(Money.from_int(1000, "USD"), Money.from_int(500, "USD") + Money.from_int(500, "USD"))
