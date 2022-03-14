@@ -18,8 +18,8 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/content`,
-        name: 'pages'
+        path: `${__dirname}/static`,
+        name: 'assets'
       }
     },
     {
@@ -32,15 +32,15 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'css',
-        path: `${__dirname}/static/css`
+        path: `${__dirname}/content`,
+        name: 'pages'
       }
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        name: 'assets',
-        path: `${__dirname}/static`
+        name: 'css',
+        path: `${__dirname}/static/css`
       }
     },
     {
@@ -113,8 +113,7 @@ module.exports = {
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 960,
-              withWebp: true,
-              ignoreFileExtensions: [],
+              withWebp: true
             }
           },
           {
@@ -135,7 +134,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-netlify-cms',
       options: {
-        modulePath: `${__dirname}/src/cms/index.js`,
+        modulePath: `${__dirname}/src/cms/index.js`
       }
     },
     {
@@ -143,9 +142,9 @@ module.exports = {
       options: {
         trackingIds: [siteConfig.googleAnalyticsId],
         pluginConfig: {
-          head: true,
-        },
-      },
+          head: true
+        }
+      }
     },
     {
       resolve: 'gatsby-plugin-sitemap',
@@ -190,19 +189,56 @@ module.exports = {
         icon: 'static/photo.jpg'
       },
     },
-    'gatsby-plugin-offline',
+    {
+      resolve: 'gatsby-plugin-offline',
+      options: {
+        workboxConfig: {
+          runtimeCaching: [{
+            // Use cacheFirst since these don't need to be revalidated (same RegExp
+            // and same reason as above)
+            urlPattern: /(\.js$|\.css$|[^:]static\/)/,
+            handler: 'CacheFirst',
+          },
+          {
+            // page-data.json files, static query results and app-data.json
+            // are not content hashed
+            urlPattern: /^https?:.*\/page-data\/.*\.json/,
+            handler: 'StaleWhileRevalidate',
+          },
+          {
+            // Add runtime caching of various other page resources
+            urlPattern: /^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|js|woff|woff2|json|css)$/,
+            handler: 'StaleWhileRevalidate',
+          },
+          {
+            // Google Fonts CSS (doesn't end in .css so we need to specify it)
+            urlPattern: /^https?:\/\/fonts\.googleapis\.com\/css/,
+            handler: 'StaleWhileRevalidate',
+          },
+          ],
+        },
+      },
+    },
     'gatsby-plugin-catch-links',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-sass',
       options: {
+        implementation: require('sass'),
         postCssPlugins: [...postCssPlugins],
         cssLoaderOptions: {
-          camelCase: false,
+          camelCase: false
         }
       }
     },
+    {
+      resolve: '@sentry/gatsby',
+      options: {
+        dsn: process.env.SENTRY_DSN,
+        tracesSampleRate: 1
+      }
+    },
     'gatsby-plugin-flow',
-    'gatsby-plugin-optimize-svgs',
+    'gatsby-plugin-optimize-svgs'
   ]
 };

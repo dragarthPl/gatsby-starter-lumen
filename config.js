@@ -30,20 +30,21 @@ module.exports = {
     bio: 'Software Developer',
     contacts: {
       email: '',
-      facebook: '',
-      telegram: '',
-      twitter: '',
+      facebook: '#',
+      telegram: '#',
+      twitter: '#',
       github: 'dragarthpl',
       rss: '',
       vkontakte: '',
       linkedin: 'marcin-goncerzewicz',
-      instagram: 'marcin.goncerzewicz',
+      instagram: '#',
       line: '',
       gitlab: '',
       weibo: '',
       codepen: '',
       youtube: '',
       soundcloud: '',
+      medium: '',
     }
   }
 };
