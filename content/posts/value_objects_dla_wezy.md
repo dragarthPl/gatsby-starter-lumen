@@ -1,14 +1,15 @@
 ---
-title: Value Objects dla węży date: "2022-03-18T22:00:00.169Z"
+title: Value Objects dla węży 
+date: "2022-03-18T22:00:00.169Z"
 template: "post"
-draft: false slug: "value-objects-dla-wezy"
+draft: false
+slug: "value-objects-dla-wezy"
 category: "DDD"
 tags:
-
 - "DDD"
 - "Architecture"
 - "Patterns"
-  description: "Zbiór wiedzy o Value Objects oraz przykłady w Pythonie"
+description: "Zbiór wiedzy o Value Objects oraz przykłady w Pythonie"
 
 ---
 
