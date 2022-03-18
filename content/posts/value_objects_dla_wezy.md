@@ -13,16 +13,16 @@ description: "Zbiór wiedzy o Value Objects oraz przykłady w Pythonie"
 
 ---
 
-- [Po co mi właściwie te welju obdżekty](#Wstep-po-co-mi-wlasciwie-te-welju-obdzekty)
-- [Czym są Value Objects i jakie mają znaczenie strategiczne](#czym-sa-value-objects-i-jakie-maja-znaczenie-strategiczne)
+- [Po co mi właściwie te welju obdżekty](#po-co-mi-właściwie-te-welju-obdżekty)
+- [Czym są Value Objects i jakie mają znaczenie strategiczne](#czym-są-value-objects-i-jakie-mają-znaczenie-strategiczne)
 - [Primitive Obsession](#primitive-obsession)
 - [Immutable](#immutable)
 - [Side Effect](#side-effect)
 - [Comparasion](#comparasion)
 - [Przykład](#przyklad)
-- [Co możemy zyskać, a co stracić](#co-mozemy-zyskać-a-co-stracic)
+- [Co możemy zyskać, a co stracić](#co-możemy-zyskać-a-co-stracić)
 
-# Po co mi właściwie te welju obdżekty
+## Po co mi właściwie te welju obdżekty
 
 Te Value Objects to po co nam są potrzebne, tylko więcej się narobię przy nich. W końcu wstawię sobie tutaj inta, dorzucę plusika i mam, a nie będę tworzyć jakieś metody na dodawanie. Po co mi to ? Jeszcze może typ miałbym zadeklarować przy tym dodawaniu ? Na koniec jeszcze zwrócę nowy taki, niezmienialny - przecież to pamięć i cykle procesora zje. To się nie godzi pisać taki niewydajny kod. 
 
@@ -206,7 +206,7 @@ class TestMoney(TestCase):
 
 ```
 
-## Co możemy zyskać, a co stracić.
+## Co możemy zyskać, a co stracić
 
 Zyski:
 - przejrzyste reguły gry
