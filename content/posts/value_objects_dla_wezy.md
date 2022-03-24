@@ -1,6 +1,6 @@
 ---
 title: Value Objects dla węży 
-date: "2022-03-18T22:00:00.169Z"
+date: "2022-03-23T22:00:00.169Z"
 template: "post"
 draft: false
 slug: "value-objects-dla-wezy"
@@ -24,7 +24,7 @@ description: "Zbiór wiedzy o Value Objects oraz przykłady w Pythonie"
 
 ## Po co mi właściwie te welju obdżekty
 
-Te Value Objects to po co nam są potrzebne, tylko więcej się narobię przy nich. W końcu wstawię sobie tutaj inta, dorzucę plusika i mam, a nie będę tworzyć jakieś metody na dodawanie. Po co mi to ? Jeszcze może typ miałbym zadeklarować przy tym dodawaniu ? Na koniec jeszcze zwrócę nowy taki, niezmienialny - przecież to pamięć i cykle procesora zje. To się nie godzi pisać taki niewydajny kod. 
+Po co nam te Value Objects ? Tylko więcej się narobię przy nich. W końcu wstawię sobie tutaj inta, dorzucę plusika i mam, a nie będę tworzyć jakieś metody na dodawanie. Po co mi to ? Jeszcze może typ miałbym zadeklarować przy tym dodawaniu ? Na koniec jeszcze zwrócę nowy taki, niezmienialny - przecież to pamięć i cykle procesora zje. To się nie godzi pisać taki niewydajny kod. 
 
 ## Czym są Value Objects i jakie mają znaczenie strategiczne
 
@@ -58,13 +58,13 @@ zamiast obiektu Money - czyli struktury pieniężnej, albo stringa, aby prezento
 
 ## Immutable
 
-Niezmienność jest cechą, która opisuje Value Objects. Ta niezmienność VO, zapewnia nam gwarancje na poziomie kodu, że są
+Niezmienność jest cechą, która charakteryzuje Value Objects. Zapewnia nam gwarancje na poziomie kodu, że są
 to obiekty read-only. Jeśli zachodzi potrzeba zmiany wartości wyrażonej za pomocą VO, musimy tego dokonać przez
 utworzenie nowego VO.
 
 ## Side Effect
 
-Chodzi o to aby uniknąć zmiany obiektu "na boku" np. po przez money.value = money.value + 3, zamiast tego chcemy mieć
+Chodzi o to, aby uniknąć zmiany obiektu "na boku" np. po przez money.value = money.value + 3, zamiast tego chcemy mieć
 nowy byt immutable, czyli Money(money.value + 3, currency).
 
 ```Python
@@ -79,20 +79,37 @@ class Money:
         self.value = value
         self.currency = currency
     
-    def add(self, money: Money) -> 'Money':
-        if self.currency == money.currency
+    def add(self, money: 'Money') -> 'Money':
+        if self.currency == money.currency:
             return Money(self.value + money.value, money.currency)
         raise ValidationError("Different currency")
+    
+    def __str__(self):
+      return f"{self.value} {self.currency}"
+    
+    def __eq__(self, other: 'Money') -> bool:
+        return self.value == other.value and self.currency == other.currency
 
 ```
 
-Czemu to takie ważne ? Przypuśćmy że mamy taka sytuację:
+Czemu to takie ważne ? Przypuśćmy, że mamy taką sytuację:
 
-```
+```python
 >>> money = Money(Decimal("5"), "PLN")
 
->>> currency_conversion(money, "USD")
+>>> after_conversion = currency_conversion(money, "USD")
+>>> print(after_conversion)
 7 USD
+```
+
+teraz obserwujemy nasz side effect:
+
+```python
+>>> money != after_conversion
+False
+
+>>> money == after_conversion
+True
 
 >>> money.value
 7
@@ -206,7 +223,7 @@ class TestMoney(TestCase):
 
 ```
 
-## Co możemy zyskać, a co stracić
+## Co możemy zyskać, a co stracić.
 
 Zyski:
 - przejrzyste reguły gry
